@@ -1,0 +1,16 @@
+{
+  "name": "notebooklm-hub",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npx wrangler pages dev ./public",
+    "deploy": "npx wrangler pages deploy ./public",
+    "db:init:local": "npx wrangler d1 execute notebooklm-hub-db --local --file=./schema.sql",
+    "db:seed:local": "npx wrangler d1 execute notebooklm-hub-db --local --file=./seed.sql",
+    "db:init:remote": "npx wrangler d1 execute notebooklm-hub-db --remote --file=./schema.sql",
+    "db:seed:remote": "npx wrangler d1 execute notebooklm-hub-db --remote --file=./seed.sql"
+  },
+  "devDependencies": {
+    "wrangler": "^3.99.0"
+  }
+}
