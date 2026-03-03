@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>NotebookLM Hub — Google NotebookLM 完全ガイド</title>
+  <meta name="description" content="Google NotebookLMの使い方を初心者から上級者まで完全網羅。実例ギャラリー、掲示板、プロンプトテンプレートを提供する日本語ポータルサイト。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Noto+Sans+JP:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- ===== Navigation ===== -->
+  <nav class="nav" id="main-nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo" data-route="home">📓 NLM Hub</a>
+      <ul class="nav-links">
+        <li><a href="#" data-route="home">ホーム</a></li>
+        <li><a href="#" data-route="board">💬 掲示板</a></li>
+        <li><a href="https://notebooklm.google.com" target="_blank">↗ NotebookLM</a></li>
+      </ul>
+      <button class="hamburger" aria-label="メニュー"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- ===== App Container ===== -->
+  <main id="app">
+
+    <!-- ===== HOME VIEW ===== -->
+    <div id="view-home" class="view active">
+      <section class="section hero">
+        <div class="hero-inner">
+          <div class="hero-content">
+            <div class="hero-badge"><span class="dot"></span>2026最新対応</div>
+            <h1>NotebookLMの<br><span class="highlight">実例を共有しよう</span></h1>
+            <p>Google NotebookLMの各機能で何ができるか。実際のユースケースを見て、あなたの実例も投稿しよう。</p>
+            <div class="hero-buttons">
+              <a href="#" class="btn btn-primary" onclick="scrollToFeatures(event)">🔍 機能と実例を見る</a>
+              <a href="#" class="btn btn-secondary" data-route="board">💬 掲示板へ</a>
+            </div>
+            <div class="hero-stats">
+              <div class="hero-stat">
+                <div class="num" id="stat-examples">0</div>
+                <div class="label">投稿された出力例</div>
+              </div>
+              <div class="hero-stat">
+                <div class="num" id="stat-threads">0</div>
+                <div class="label">掲示板スレッド</div>
+              </div>
+              <div class="hero-stat">
+                <div class="num">無料</div>
+                <div class="label">基本プラン</div>
+              </div>
+            </div>
+            <div class="hero-tags">
+              <span class="tag">🎙 AIポッドキャスト</span>
+              <span class="tag">🎬 動画生成</span>
+              <span class="tag">🧠 マインドマップ</span>
+              <span class="tag">📝 クイズ</span>
+              <span class="tag">📊 レポート</span>
+            </div>
+          </div>
+          <div class="hero-shapes">
+            <div class="shape shape-4"></div>
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="features-section">
+        <div class="section-inner">
+          <span class="section-badge">Features & Examples</span>
+          <h2 class="section-title">機能別 <span class="gradient">実例ギャラリー</span></h2>
+          <p class="section-subtitle">各機能カードをクリックして、実際のユースケースを見てみましょう。あなたの実例も投稿できます。</p>
+          <div class="features-grid" id="features-grid">
+            <!-- JS generates feature cards -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Board Preview on Home -->
+      <section class="section">
+        <div class="section-inner">
+          <span class="section-badge">Community</span>
+          <h2 class="section-title">コミュニティ <span class="gradient">掲示板</span></h2>
+          <p class="section-subtitle">NotebookLMに関する質問、Tips共有、雑談をしましょう。</p>
+          <div id="board-preview"></div>
+          <div style="text-align:center;margin-top:2rem">
+            <a href="#" class="btn btn-primary" data-route="board">掲示板をすべて見る →</a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ===== FEATURE DETAIL VIEW ===== -->
+    <div id="view-feature" class="view">
+      <section class="section" style="padding-top:8rem">
+        <div class="section-inner">
+          <a href="#" class="back-link" data-route="home">← ホームに戻る</a>
+          <div class="feature-detail-header" id="feature-header">
+            <!-- JS fills this -->
+          </div>
+
+          <!-- Example Gallery -->
+          <div class="gallery-section">
+            <div class="gallery-header">
+              <h3>📋 NotebookLMの出力例</h3>
+              <button class="btn btn-primary btn-sm" id="btn-show-post-form">＋ 出力例を投稿</button>
+            </div>
+
+            <!-- Post Form (hidden by default) -->
+            <div class="post-form-wrapper" id="post-form-wrapper" style="display:none">
+              <form id="example-form" class="post-form">
+                <h4>NotebookLMの出力例を投稿する</h4>
+                <div class="form-group">
+                  <label>ニックネーム</label>
+                  <input type="text" id="ex-nickname" placeholder="例: AIマスター" required maxlength="20">
+                </div>
+                <div class="form-group">
+                  <label>タイトル</label>
+                  <input type="text" id="ex-title" placeholder="例: 量子コンピューティング入門の要約" required maxlength="80">
+                </div>
+                <div class="form-group">
+                  <label>📂 使用したソース</label>
+                  <input type="text" id="ex-source" placeholder="例: 量子コンピューティング入門（PDF）、Google AI Blog記事" required
+                    maxlength="120">
+                </div>
+                <div class="form-group">
+                  <label>📋 NotebookLMの出力内容</label>
+                  <textarea id="ex-output" placeholder="NotebookLMが生成した内容をそのまま貼り付けてください..." required maxlength="3000"
+                    rows="10"></textarea>
+                </div>
+                <div class="form-group">
+                  <label>🏷 タグ（任意）</label>
+                  <select id="ex-tag">
+                    <option value="">選択してください</option>
+                    <option value="ビジネス">💼 ビジネス</option>
+                    <option value="学習">📚 学習</option>
+                    <option value="研究">🔬 研究</option>
+                    <option value="クリエイティブ">🎨 クリエイティブ</option>
+                    <option value="その他">🔧 その他</option>
+                  </select>
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary">投稿する</button>
+                  <button type="button" class="btn btn-secondary" id="btn-cancel-post">キャンセル</button>
+                </div>
+              </form>
+            </div>
+
+            <div class="gallery-grid" id="gallery-grid">
+              <!-- JS fills examples -->
+            </div>
+            <div class="empty-state" id="gallery-empty" style="display:none">
+              <div class="empty-icon">📭</div>
+              <p>まだ実例がありません。最初の投稿者になりましょう！</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ===== BOARD VIEW ===== -->
+    <div id="view-board" class="view">
+      <section class="section" style="padding-top:8rem">
+        <div class="section-inner">
+          <a href="#" class="back-link" data-route="home">← ホームに戻る</a>
+          <span class="section-badge">Community</span>
+          <h2 class="section-title">コミュニティ <span class="gradient">掲示板</span></h2>
+          <p class="section-subtitle">NotebookLMに関する質問、Tips、雑談を自由に投稿しましょう。</p>
+
+          <div class="board-controls">
+            <div class="board-filters">
+              <button class="cat-btn active" data-board-cat="all">すべて</button>
+              <button class="cat-btn" data-board-cat="質問">❓ 質問</button>
+              <button class="cat-btn" data-board-cat="Tips">💡 Tips</button>
+              <button class="cat-btn" data-board-cat="雑談">🗣 雑談</button>
+            </div>
+            <button class="btn btn-primary btn-sm" id="btn-new-thread">＋ 新規スレッド</button>
+          </div>
+
+          <!-- New Thread Form -->
+          <div class="post-form-wrapper" id="thread-form-wrapper" style="display:none">
+            <form id="thread-form" class="post-form">
+              <h4>新規スレッドを作成</h4>
+              <div class="form-group">
+                <label>ニックネーム</label>
+                <input type="text" id="th-nickname" placeholder="例: NLMファン" required maxlength="20">
+              </div>
+              <div class="form-group">
+                <label>カテゴリ</label>
+                <select id="th-category" required>
+                  <option value="質問">❓ 質問</option>
+                  <option value="Tips">💡 Tips</option>
+                  <option value="雑談">🗣 雑談</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>タイトル</label>
+                <input type="text" id="th-title" placeholder="スレッドのタイトル" required maxlength="80">
+              </div>
+              <div class="form-group">
+                <label>本文</label>
+                <textarea id="th-body" placeholder="内容を書いてください..." required maxlength="1000" rows="5"></textarea>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">投稿する</button>
+                <button type="button" class="btn btn-secondary" id="btn-cancel-thread">キャンセル</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="threads-list" id="threads-list">
+            <!-- JS fills threads -->
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ===== THREAD DETAIL VIEW ===== -->
+    <div id="view-thread" class="view">
+      <section class="section" style="padding-top:8rem">
+        <div class="section-inner">
+          <a href="#" class="back-link" data-route="board">← 掲示板に戻る</a>
+          <div id="thread-detail">
+            <!-- JS fills thread detail -->
+          </div>
+
+          <!-- Reply Form -->
+          <div class="reply-section">
+            <h4>💬 返信する</h4>
+            <form id="reply-form" class="post-form reply-form-inline">
+              <div class="form-row">
+                <input type="text" id="re-nickname" placeholder="ニックネーム" required maxlength="20">
+                <button type="submit" class="btn btn-primary btn-sm">返信</button>
+              </div>
+              <textarea id="re-body" placeholder="返信内容..." required maxlength="500" rows="3"></textarea>
+            </form>
+          </div>
+
+          <div class="replies-list" id="replies-list">
+            <!-- JS fills replies -->
+          </div>
+        </div>
+      </section>
+    </div>
+
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-links">
+        <a href="https://notebooklm.google.com" target="_blank">NotebookLM 公式サイト</a>
+        <a href="https://blog.google/technology/ai/notebooklm/" target="_blank">Google ブログ</a>
+        <a href="#" data-route="home">トップに戻る ↑</a>
+      </div>
+      <p class="footer-copy">© 2026 NotebookLM Hub — This is a fan-made resource, not affiliated with Google.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
